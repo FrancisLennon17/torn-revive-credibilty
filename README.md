@@ -8,7 +8,7 @@ The player may then POST via the UI their up/down vote for that user.
 - Ensure go is installed and that $GOROOT is exported as the appropriate directory
 - In the terminal run `git clone git@github.com:FrancisLennon17/torn-revive-credibilty.git`
 - Create a new file in `torn-revive-credibilty/config` called config.go and copy the contents of config.json.example into the file. Update that information with the appropriate configuration
-- from the `torn-revive-credibility` directory, run `go run main.go` (can optionally pass `-config={config.json location}`)
+- from the `torn-revive-credibility` directory, run `go run main.go` (can optionally pass `-config={config.json location}`, but the file will be fetched from the config folder by default)
 
 ## GET /credibility
 
