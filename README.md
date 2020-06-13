@@ -36,9 +36,9 @@ Base64 encoded to discourage users from voting with other player's ids, and voti
 This webservices reads and writes to the credibility table in a postgres db.
 This table has three columns:
 
-1. torn_id
-2. positive
-3. negative
+1. torn_id (user id of the target player)
+2. positive (list of user ids that have upvoted this user)
+3. negative (list of user ids that have downvoted this user)
 
 Edit script below as necessary
 ```
