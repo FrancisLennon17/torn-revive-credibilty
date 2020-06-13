@@ -21,6 +21,7 @@ The player may then POST via the UI their up/down vote for that user.
 
 - `positives` the count of users that have upvoted this player
 - `negatives` the count of users that have downvoted this player
+- `voted` positive or negative if the user has previously voted on this player (this field does not get returned if not)
 
 ## POST /credibility
 
