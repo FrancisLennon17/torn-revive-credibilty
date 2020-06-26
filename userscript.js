@@ -93,7 +93,7 @@ const getVotes = async (targetID, userID) => {
   return new Promise((resolve, reject) => {
     GM_xmlhttpRequest({
       method: "GET",
-      url: "http://127.0.0.1:8080/credibility",
+      url: "https://torn-revive-credibility.uc.r.appspot.com/credibility",
       headers: {
         target_id: targetID,
         user_id: userID,
@@ -117,7 +117,7 @@ const postVote = async (targetID, userID, vote) => {
   return new Promise((resolve, reject) => {
     GM_xmlhttpRequest({
       method: "POST",
-      url: "http://127.0.0.1:8080/credibility",
+      url: "https://torn-revive-credibility.uc.r.appspot.com/credibility",
       headers: {
         target_id: targetID,
         vote: btoa(userID + ";" + vote),
