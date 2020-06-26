@@ -214,13 +214,10 @@ func (e Env) rateUser(w http.ResponseWriter, r *http.Request) {
 	log.Printf("\nupdating credibility table\n")
 
 	rateErr := rate(db, targetID, userID, vote)
-	if rateErr != nil && rateErr.Error() != "user already voted" {
+	if rateErr != nil {
 		log.Fatalf("Error rating target: %+v", rateErr)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
-	} else if rateErr != nil && rateErr.Error() == "user already voted" {
-		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "Nothing to update, user already voted")
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -240,11 +237,14 @@ func rate(db *sql.DB, targetID, userID, vote string) error {
 		}
 	}
 
-	// if voted already, swap vote or return "alreadyVotedErr"
-	votedPositive, votedNegative := util.VotedOnUser(targetID, goodList, badList)
+	// if voted already, swap vote or remove voteß
+	votedPositive, votedNegative := util.VotedOnUser(userID, goodList, badList)
 	if vote == "positive" {
+		fmt.Printf("\n\nHERE:%d\n%v\n%s\n\n", votedPositive, goodList, targetID)
 		if votedPositive != -1 {
-			return util.AlreadyVotedErr{}
+			fmt.Printf("\n\nHERE\n\n")
+			goodList = append(goodList[:votedPositive], goodList[votedPositive+1:]...)
+			return updateCredibility(db, goodList, targetID, "positive")
 		} else if votedNegative != -1 {
 			badList = append(badList[:votedNegative], badList[votedNegative+1:]...)
 			removeVoteErr := updateCredibility(db, badList, targetID, "negative")
@@ -256,7 +256,8 @@ func rate(db *sql.DB, targetID, userID, vote string) error {
 		return updateCredibility(db, goodList, targetID, vote)
 	} else if vote == "negative" {
 		if votedNegative != -1 {
-			return util.AlreadyVotedErr{}
+			badList = append(badList[:votedNegative], badList[votedNegative+1:]...)
+			return updateCredibility(db, badList, targetID, "negative")
 		} else if votedPositive != -1 {
 			goodList = append(goodList[:votedPositive], goodList[votedPositive+1:]...)
 			removeVoteErr := updateCredibility(db, goodList, targetID, "positive")

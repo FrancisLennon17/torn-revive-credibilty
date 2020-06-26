@@ -7,12 +7,6 @@ import (
 	"strings"
 )
 
-type AlreadyVotedErr struct{}
-
-func (AlreadyVotedErr) Error() string {
-	return "user already voted"
-}
-
 //returns the index of the userID in the userList of positive or negative votes
 func VotedOnUser(userID string, goodList []string, badList []string) (int, int) {
 	positiveVoteExists := -1
